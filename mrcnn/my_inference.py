@@ -19,6 +19,11 @@ import os
 
 import my_functions as f
 
+from mrcnn.model import log
+from mrcnn import visualize
+import matplotlib.pyplot as plt
+from mrcnn.visualize import display_images
+
 
 #######################################################################################
 ## SET UP CONFIGURATION
@@ -33,7 +38,7 @@ class BowlConfig(Config):
     NAME = "Inference"
 
     IMAGE_RESIZE_MODE = "pad64" ## tried to modfied but I am using other git clone
-    ## No augmentation
+    ## No augmentati
     ZOOM = False
     ASPECT_RATIO = 1
     MIN_ENLARGE = 1
@@ -74,13 +79,13 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 
 ## Change this with the path to the last epoch of train
-model_path = 
-model_path = os.path.join(MODEL_DIR,'YOUR_LOG_FOLDER','final.h5')
+
+model_path = os.path.join(MODEL_DIR,'final','final.h5')
 
 
 ## change this with the correct paths for images and sample submission
-test_path = os.path.join(ROOT_DIR,'stage_2')
-sample_submission = pd.read_csv('stage2_sample_submission_final.csv')
+test_path = os.path.join(ROOT_DIR,'dataset/stage2_test_final')
+sample_submission = pd.read_csv('dataset/stage2_sample_submission_final.csv')
 
 
 print("Loading weights from ", model_path)
@@ -100,6 +105,18 @@ ImageId_d = []
 EncodedPixels_d = []
 
 n_images= len(sample_submission.ImageId)
+
+
+def get_ax(rows=1, cols=1, size=16):
+    """Return a Matplotlib Axes array to be used in
+    all visualizations in the notebook. Provide a
+    central point to control graph sizes.
+
+    Adjust the size attribute to control how big to render images
+    """
+    _, ax = plt.subplots(rows, cols, figsize=(size * cols, size * rows))
+    return ax
+
 for i in np.arange(n_images):
     image_id = sample_submission.ImageId[i]
     print('Start detect',i, '  ' ,image_id)
@@ -122,6 +139,13 @@ for i in np.arange(n_images):
 
     ## Make prediction for that image
     results = model.detect([original_image], verbose=0)
+
+    # Display results
+    ax = get_ax(1)
+    r = results[0]
+    visualize.display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
+                                ['a', 'b'], r['scores'], ax=ax,
+                                title="Predictions")
 
     ## Proccess prediction into rle
     pred_masks = results[0]['masks']
