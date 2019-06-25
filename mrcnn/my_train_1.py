@@ -51,8 +51,8 @@ class BowlConfig(Config):
     LEARNING_RATE = 0.001
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-    GPU_COUNT = 1
-    IMAGES_PER_GPU = 2
+    GPU_COUNT = 4
+    IMAGES_PER_GPU = 1
 
     
     # Number of classes (including background)
@@ -72,7 +72,7 @@ class BowlConfig(Config):
     TRAIN_ROIS_PER_IMAGE = 600
 
     STEPS_PER_EPOCH = 664//IMAGES_PER_GPU
-    VALIDATION_STEPS = 2//IMAGES_PER_GPU ## We are training with the whole dataset so validation is not very meaningfull, I put a two here so it is faster. We either use train loss or calculate in a separate procceses the mAP for each epoch
+    VALIDATION_STEPS =1# 2//IMAGES_PER_GPU ## We are training with the whole dataset so validation is not very meaningfull, I put a two here so it is faster. We either use train loss or calculate in a separate procceses the mAP for each epoch
 
     # use small validation steps since the epoch is small
     # VALIDATION_STEPS = 5

@@ -51,8 +51,8 @@ class BowlConfig(Config):
     LEARNING_RATE = 0.001
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
-    GPU_COUNT = 1
-    IMAGES_PER_GPU = 2
+    GPU_COUNT = 4
+    IMAGES_PER_GPU = 1
 
     
     # Number of classes (including background)
@@ -92,7 +92,7 @@ ROOT_DIR = os.getcwd()
 
 
 ## Change this dir to the stage 1 training data
-train_dir = os.path.join(ROOT_DIR,'stage1_train')
+train_dir = os.path.join(ROOT_DIR,'dataset/kaggle-dsbowl-2018-dataset-fixes/stage1_train')
 
 
 # Get train IDs
@@ -168,7 +168,7 @@ model = modellib.MaskRCNN(mode="training", config=bowl_config,
                           model_dir=MODEL_DIR)
 
 ## Change this with the path to the last epoch of train step 2
-model_path = os.path.join(MODEL_DIR,'YOUR_LOG_DIR','final.h5') 
+model_path = os.path.join(MODEL_DIR, '00220190520T1522','final.h5') 
 model.load_weights(model_path, by_name=True)
 
 import time
