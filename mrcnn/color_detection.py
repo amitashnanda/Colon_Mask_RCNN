@@ -52,6 +52,11 @@ for im_name in im_names:
     plt.savefig('simple_analysis/plots/' + im_name+'_res.png')
     plt.show()
 
+blue_percent = np.array([sum(all_blue[0:int(img_size[1]/2)]), sum(all_blue[int(img_size[1]/2):])])
+brown_percent = np.array([sum(all_brown[0:int(img_size[1]/2)]), sum(all_brown[int(img_size[1]/2):])])
+
+blue_val = blue_percent / (blue_percent + brown_percent)
+brown_val = brown_percent / (blue_percent + brown_percent)
 all_brown = gaussian_filter1d(all_brown, sigma=15)
 all_blue = gaussian_filter1d(all_blue, sigma=15)
 plt.plot(all_blue[::-1])
@@ -59,3 +64,7 @@ plt.plot(all_brown[::-1])
 plt.legend(['blue', 'brown'])
 plt.savefig('simple_analysis/plots/' +'all_in_one.png')
 plt.show()
+
+
+print(blue_val)
+print(brown_val)
