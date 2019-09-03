@@ -38,7 +38,7 @@ bowl_config.display()
 ROOT_DIR = os.getcwd()
 
 ## Change this dir to the stage 1 training data
-train_dir = os.path.join(ROOT_DIR, 'dataset/crypts/train/Images')
+train_dir = os.path.join(ROOT_DIR, 'dataset/new_crypts/train/Images')
 print(train_dir)
 
 # Get train IDs
@@ -46,14 +46,14 @@ train_ids = next(os.walk(train_dir))[2]
 
 # Training dataset
 dataset_train = CryptsDataset()
-dataset_train.load_bowl(train_ids, 'dataset/crypts/train')
+dataset_train.load_bowl(train_ids, 'dataset/new_crypts/train')
 dataset_train.prepare()
 
 # # Validation dataset, same as training.. will use pad64 on this one
-val_dir = os.path.join(ROOT_DIR, 'dataset/crypts/valid/Images')
+val_dir = os.path.join(ROOT_DIR, 'dataset/new_crypts/valid/Images/')
 valid_ids = next(os.walk(val_dir))[2]
 dataset_val = CryptsDataset()
-dataset_val.load_bowl(valid_ids, 'dataset/crypts/valid')
+dataset_val.load_bowl(valid_ids, 'dataset/new_crypts/valid')
 dataset_val.prepare()
 
 # Directory to save logs and trained model
