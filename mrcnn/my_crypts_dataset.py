@@ -1,8 +1,66 @@
-from utils import Dataset
+from mrcnn.utils import Dataset
 import os
 import numpy as np
 import skimage.io
 import glob
+
+from mrcnn.config import Config
+
+
+class CryptsConfig(Config):
+    """Configuration for training on the toy shapes dataset.
+    Derives from the base Config class and overrides values specific
+    to the toy shapes dataset.
+    """
+    # Give the configuration a recognizable name
+    NAME = "crypt"
+
+    IMAGE_RESIZE_MODE = "square"
+    IMAGE_MIN_DIM = 800
+    IMAGE_MAX_DIM = 1024
+    IMAGE_MIN_SCALE = False  ## Not using this
+
+
+    IMAGE_CHANNEL_COUNT = 3
+    # Augmentation parameters
+    ASPECT_RATIO = 1.3  ## Maximum aspect ratio modification when scaling
+    MIN_ENLARGE = 1.2  ## Minimum enlarging of images, note that this will be randomized
+    ZOOM = 1.5  ## Maximum zoom per image, note that this will be randomized
+
+
+    ROT_RANGE = 10.
+    CHANNEL_SHIFT_RANGE = 15
+
+    LEARNING_RATE = 0.001
+    # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
+    # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
+    GPU_COUNT = 4
+    IMAGES_PER_GPU = 1
+
+    # Number of classes (including background)
+    NUM_CLASSES = 1 + 1  # background + nuclei
+
+
+    # Use smaller anchors because our image and objects are small
+    RPN_ANCHOR_SCALES = (128, 256, 512)  # anchor side in pixels
+    # RPN_ANCHOR_SCALES = (4, 8 , 16, 32, 64)  # anchor side in pixels
+
+    # Reduce training ROIs per image because the images are small and have
+    # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
+    TRAIN_ROIS_PER_IMAGE = 200
+
+    STEPS_PER_EPOCH = 664 // IMAGES_PER_GPU
+    VALIDATION_STEPS = 1  # 2//IMAGES_PER_GPU ## We are training with the whole dataset so validation is not very meaningfull, I put a two here so it is faster. We either use train loss or calculate in a separate procceses the mAP for each epoch
+
+    # use small validation steps since the epoch is small
+    # VALIDATION_STEPS = 5
+
+    USE_MINI_MASK = True
+
+    MAX_GT_INSTANCES = 256
+
+    DETECTION_MAX_INSTANCES = 512
+
 
 
 class CryptsDataset(Dataset):
@@ -43,7 +101,7 @@ class CryptsDataset(Dataset):
         """Return the shapes data of the image."""
         info = self.image_info[image_id]
         if info["source"] == "bowl":
-            return info["bowl"]
+            return info
         else:
             super(self.__class__).image_reference(self, image_id)
 
