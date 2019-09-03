@@ -52,8 +52,8 @@ class CryptsDataset(Dataset):
         """
         info = self.image_info[image_id]
         image_path = info['path']
-        mask_paths = self.folder_path + '/Annotation/' + os.path.splitext(image_path)[0] + '_*'
-            # os.path.join(self.folder_path, 'Annotation', image_path)
+        mask_paths = os.path.join(self.folder_path, 'Annotation', os.path.splitext(image_path)[0])+ '_*'
+        #os.path.join(self.folder_path, 'Annotation', image_path)
 
         mask = skimage.io.imread_collection(mask_paths).concatenate()
         mask = np.rollaxis(mask,0,3)
