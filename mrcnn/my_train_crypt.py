@@ -61,7 +61,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 # Local path to trained weights file
 ## https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_crypt_0040.h5")
+COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
 
 model = modellib.MaskRCNN(mode="training", config=bowl_config,
                           model_dir=MODEL_DIR)
@@ -82,16 +82,13 @@ start_time = time.time()
 # ## This should be the equivalente version of my augmentations using the imgaug library
 # ## However, there are subtle differences so I keep my implementation
 augmentation = iaa.Sequential([
+    iaa.ChangeColorspace(from_colorspace="RGB", to_colorspace="HSV"),
     iaa.Fliplr(0.5),
     iaa.Flipud(0.5),
-    iaa.OneOf([iaa.Affine(rotate=0),
-               iaa.Affine(rotate=90),
-               iaa.Affine(rotate=180),
-               iaa.Affine(rotate=270)]),
-    iaa.Sometimes(0.5,iaa.Affine(rotate=(-10,10))),
-    iaa.Add((-15, 15), per_channel=1)
-
-])
+    iaa.Sometimes(0.5,iaa.Affine(rotate=(-180,180))),
+    iaa.Sometimes(0.5,iaa.CropAndPad(percent=(-0.25, 0.25))),
+    iaa.Sometimes(0.5, iaa.AddElementwise((-10, 10), per_channel=0.5)),
+], random_order=True)
 
 # augmentation = False
 

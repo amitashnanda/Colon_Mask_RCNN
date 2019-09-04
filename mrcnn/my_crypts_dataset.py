@@ -38,7 +38,7 @@ class CryptsConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 1  # background + nuclei
+    NUM_CLASSES = 1 + 1 + 1  # background + u-shape + circular glands
 
 
     # Use smaller anchors because our image and objects are small
@@ -111,12 +111,18 @@ class CryptsDataset(Dataset):
         info = self.image_info[image_id]
         image_path = info['path']
         mask_paths = os.path.join(self.folder_path, 'Annotation', os.path.splitext(image_path)[0])+ '_*'
+        gland_path = os.path.join(self.folder_path, 'Annotation_gland', os.path.splitext(image_path)[0])+ '_*'
         #os.path.join(self.folder_path, 'Annotation', image_path)
 
         mask = skimage.io.imread_collection(mask_paths).concatenate()
+        try:
+            gland_mask = skimage.io.imread_collection(gland_path).concatenate()
+            class_ids = np.array([1]* mask.shape[0] + [2] * gland_mask.shape[0])
+            mask = np.concatenate((mask, gland_mask))
+        except:
+            class_ids = np.array([1] * mask.shape[0])
         mask = np.rollaxis(mask,0,3)
         mask = np.clip(mask,0,1)
-        class_ids = np.array([1]* mask.shape[2])
         return mask, class_ids.astype(np.int32)
 
 
