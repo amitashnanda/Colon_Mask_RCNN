@@ -57,10 +57,10 @@ class BowlConfig(Config):
     LEARNING_RATE = 0.001
     
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 1 # background + nuclei
+    NUM_CLASSES = 1 + 1 + 1 # background + nuclei
 
     # Use smaller anchors because our image and objects are small
-    RPN_ANCHOR_SCALES = (8 , 16, 32, 64, 128)  # anchor side in pixels
+    RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
@@ -80,12 +80,12 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 ## Change this with the path to the last epoch of train
 
-model_path = os.path.join(MODEL_DIR,'final','final.h5')
+model_path = os.path.join(MODEL_DIR, 'new.h5')
 
 
 ## change this with the correct paths for images and sample submission
-test_path = os.path.join(ROOT_DIR,'dataset/stage2_test_final')
-sample_submission = pd.read_csv('dataset/stage2_sample_submission_final.csv')
+test_path = os.path.join(ROOT_DIR,'dataset/crypts/test')
+sample_submission = pd.read_csv('dataset/crypts_rotate.csv')
 
 
 print("Loading weights from ", model_path)
@@ -126,10 +126,10 @@ for i in np.arange(n_images):
     tf.set_random_seed(seed)
 
     ## Load the image
-    image_path = os.path.join(test_path, image_id, 'images', image_id + '.png')
+    image_path = os.path.join(test_path, image_id + '.png')
     original_image = skimage.io.imread(image_path)
     ####################################################################
-    ## This is needed for the stage 2 image that has only one channel
+    ## This is needed for tki8,ki8h,kii8,ki8i8,ki8,ki88,ki8,ki8e,ki8,ki,ki8888,ki8ki8ki8,ki8 ,ki8,ki8stage 2 image that has only one channel
     if len(original_image.shape)<3:
         original_image = img_as_ubyte(original_image)
         original_image = np.expand_dims(original_image,2)
@@ -144,8 +144,8 @@ for i in np.arange(n_images):
     ax = get_ax(1)
     r = results[0]
     visualize.display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
-                                ['a', 'b'], r['scores'], ax=ax,
-                                title="Predictions")
+                                ['a', 'b'], r['scores'],
+                                title=image_id)
 
     ## Proccess prediction into rle
     pred_masks = results[0]['masks']
@@ -153,7 +153,7 @@ for i in np.arange(n_images):
     class_ids = results[0]['class_ids']
 
     if len(class_ids): ## Some objects are detected
-        ImageId_batch, EncodedPixels_batch, _ = f.numpy2encoding(pred_masks, image_id,scores=scores_masks,dilation=True)
+        ImageId_batch, EncodedPixels_batch, _ = f.numpy2encoding(pred_masks, image_id, scores=scores_masks, dilation=True)
         ImageId_d += ImageId_batch
         EncodedPixels_d += EncodedPixels_batch
 
