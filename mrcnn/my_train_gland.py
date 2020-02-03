@@ -93,7 +93,7 @@ bowl_config.display()
 ROOT_DIR = os.getcwd()
 
 ## Change this dir to the stage 1 training data
-train_dir = os.path.join(ROOT_DIR, 'dataset/gland/train')
+train_dir = os.path.join(ROOT_DIR, 'dataset/gland/train/Images')
 print(train_dir)
 
 # Get train IDs
@@ -105,7 +105,7 @@ dataset_train.load_bowl(train_ids, 'dataset/gland/train')
 dataset_train.prepare()
 
 # # Validation dataset, same as training.. will use pad64 on this one
-val_dir = os.path.join(ROOT_DIR, 'dataset/gland/valid')
+val_dir = os.path.join(ROOT_DIR, 'dataset/gland/valid/Images')
 valid_ids = next(os.walk(val_dir))[2]
 dataset_val = GlandDataset()
 dataset_val.load_bowl(valid_ids, 'dataset/gland/valid')

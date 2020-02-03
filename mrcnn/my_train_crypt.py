@@ -38,7 +38,9 @@ bowl_config.display()
 ROOT_DIR = os.getcwd()
 
 ## Change this dir to the stage 1 training data
-train_dir = os.path.join(ROOT_DIR, 'dataset/new_crypts/train/Images')
+train_dir = os.path.join(ROOT_DIR, 'dataset/Reinhard/train/Images')
+#train_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/train/Images')
+## add here
 print(train_dir)
 
 # Get train IDs
@@ -46,14 +48,17 @@ train_ids = next(os.walk(train_dir))[2]
 
 # Training dataset
 dataset_train = CryptsDataset()
-dataset_train.load_bowl(train_ids, 'dataset/new_crypts/train')
+dataset_train.load_bowl(train_ids, 'dataset/Reinhard/train')
+#dataset_train.load_bowl(train_ids, 'dataset/Deconvolution/train')
 dataset_train.prepare()
 
 # # Validation dataset, same as training.. will use pad64 on this one
-val_dir = os.path.join(ROOT_DIR, 'dataset/new_crypts/valid/Images/')
+#val_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/valid/Images/')
+val_dir = os.path.join(ROOT_DIR, 'dataset/Reinhard/valid/Images/')
 valid_ids = next(os.walk(val_dir))[2]
 dataset_val = CryptsDataset()
-dataset_val.load_bowl(valid_ids, 'dataset/new_crypts/valid')
+#dataset_val.load_bowl(valid_ids, 'dataset/Deconvolution/valid')
+dataset_val.load_bowl(valid_ids, 'dataset/Reinhard/valid')
 dataset_val.prepare()
 
 # Directory to save logs and trained model
@@ -82,7 +87,7 @@ start_time = time.time()
 # ## This should be the equivalente version of my augmentations using the imgaug library
 # ## However, there are subtle differences so I keep my implementation
 augmentation = iaa.Sequential([
-    iaa.ChangeColorspace(from_colorspace="RGB", to_colorspace="HSV"),
+    #iaa.ChangeColorspace(from_colorspace="RGB", to_colorspace="HSV"),
     iaa.Fliplr(0.5),
     iaa.Flipud(0.5),
     iaa.Sometimes(0.5,iaa.Affine(rotate=(-180,180))),

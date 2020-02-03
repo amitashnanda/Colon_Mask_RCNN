@@ -3,6 +3,7 @@ import os
 import numpy as np
 import skimage.io
 import glob
+import cv2
 
 from mrcnn.config import Config
 
@@ -38,7 +39,7 @@ class CryptsConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 1 + 1  # background + u-shape + circular glands
+    NUM_CLASSES = 1 + 2   # background + u-shape + circular glands
 
 
     # Use smaller anchors because our image and objects are small
@@ -76,6 +77,7 @@ class CryptsDataset(Dataset):
         """
         # Add classes
         self.add_class("bowl", 1, "crypt")
+        self.add_class("bowl", 2, "gland")
 
         #Image size must be dividable by 2 at least 6 times to avoid fractions when downscaling and upscaling.For example, use 256, 320, 384, 448, 512, ... etc. 
 
@@ -94,6 +96,7 @@ class CryptsDataset(Dataset):
         image_path = info['path']
         image_path = os.path.join(self.folder_path, 'Images', image_path)
         image = skimage.io.imread(image_path)
+        #image = cv2.imread(image_path)
         image = image[:,:,:3]
         return image
         
@@ -114,9 +117,16 @@ class CryptsDataset(Dataset):
         gland_path = os.path.join(self.folder_path, 'Annotation_gland', os.path.splitext(image_path)[0])+ '_*'
         #os.path.join(self.folder_path, 'Annotation', image_path)
 
+        ## change here
         mask = skimage.io.imread_collection(mask_paths).concatenate()
+        #for img in glob.glob(mask_paths+"/*.png"):
+        #    mask = cv2.imread(img)
+
         try:
             gland_mask = skimage.io.imread_collection(gland_path).concatenate()
+            #for img in glob.glob(gland_path+"/*.png"):
+            #    gland_mask = cv2.imread(img)
+
             class_ids = np.array([1]* mask.shape[0] + [2] * gland_mask.shape[0])
             mask = np.concatenate((mask, gland_mask))
         except:
