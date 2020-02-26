@@ -22,20 +22,21 @@ from scipy import ndimage as ndi
 import matplotlib.pyplot as plt
 
 from skimage.morphology import watershed, disk
-from skimage import data
+from skimage import data, io
 from skimage.filters import rank
 from skimage.util import img_as_ubyte
 
 
 image = img_as_ubyte(data.camera())
 
+image = io.imread('/Users/mahdi/Desktop/1005479.svs (1, 63517, 19793, 927, 1727)1.png', 1)
 # denoise image
 denoised = rank.median(image, disk(2))
 
 # find continuous region (low gradient -
 # where less than 10 for this image) --> markers
 # disk(5) is used here to get a more smooth image
-markers = rank.gradient(denoised, disk(5)) < 10
+markers = rank.gradient(denoised, disk(1)) < 10
 markers = ndi.label(markers)[0]
 
 # local gradient (disk(2) is used to keep edges thin)
