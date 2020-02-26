@@ -23,15 +23,15 @@ class CryptsConfig(Config):
 
     IMAGE_CHANNEL_COUNT = 3
     # Augmentation parameters
-    ASPECT_RATIO = 1.3  ## Maximum aspect ratio modification when scaling
-    MIN_ENLARGE = 1.2  ## Minimum enlarging of images, note that this will be randomized
+    ASPECT_RATIO = 1.1  ## Maximum aspect ratio modification when scaling
+    MIN_ENLARGE = 1 ## Minimum enlarging of images, note that this will be randomized
     ZOOM = 1.5  ## Maximum zoom per image, note that this will be randomized
 
 
     ROT_RANGE = 10.
     CHANNEL_SHIFT_RANGE = 15
 
-    LEARNING_RATE = 0.001
+    LEARNING_RATE = 0.0001
     # Train on 1 GPU and 8 images per GPU. We can put multiple images on each
     # GPU because the images are small. Batch size is 8 (GPUs * images/GPU).
     GPU_COUNT = 4
@@ -42,8 +42,8 @@ class CryptsConfig(Config):
 
 
     # Use smaller anchors because our image and objects are small
-    RPN_ANCHOR_SCALES = (128, 256, 512)  # anchor side in pixels
-    # RPN_ANCHOR_SCALES = (4, 8 , 16, 32, 64)  # anchor side in pixels
+    # RPN_ANCHOR_SCALES = (128, 256, 512)  # anchor side in pixels
+    RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
@@ -76,6 +76,7 @@ class CryptsDataset(Dataset):
         """
         # Add classes
         self.add_class("bowl", 1, "crypt")
+        self.add_class("bowl", 2, "gland")
 
         #Image size must be dividable by 2 at least 6 times to avoid fractions when downscaling and upscaling.For example, use 256, 320, 384, 448, 512, ... etc. 
 
@@ -113,12 +114,20 @@ class CryptsDataset(Dataset):
         mask_paths = os.path.join(self.folder_path, 'Annotation', os.path.splitext(image_path)[0])+ '_*'
         gland_path = os.path.join(self.folder_path, 'Annotation_gland', os.path.splitext(image_path)[0])+ '_*'
         #os.path.join(self.folder_path, 'Annotation', image_path)
-
-        mask = skimage.io.imread_collection(mask_paths).concatenate()
+        class_ids = np.array([])
+        mask=np.array([])
+        try:
+            mask = skimage.io.imread_collection(mask_paths).concatenate()
+            class_ids = np.array([1] * mask.shape[0])
+        except:
+            pass
         try:
             gland_mask = skimage.io.imread_collection(gland_path).concatenate()
-            class_ids = np.array([1]* mask.shape[0] + [2] * gland_mask.shape[0])
-            mask = np.concatenate((mask, gland_mask))
+            class_ids = np.concatenate((class_ids, [2] * gland_mask.shape[0]))
+            if mask != np.array([]):
+                mask = np.concatenate((mask, gland_mask))
+            else:
+                mask = gland_mask
         except:
             class_ids = np.array([1] * mask.shape[0])
         mask = np.rollaxis(mask,0,3)
