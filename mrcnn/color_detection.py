@@ -7,9 +7,11 @@ import glob
 from scipy.ndimage.filters import gaussian_filter1d
 
 
-path = 'new_images'
+# path = 'dataset/Non_cdx/'
+path = 'dataset/new_data/'
+
 # im_names = ['im1', 'im2', 'im3', 'im5', 'im7', 'im8', 'im10', 'im11', 'im15', 'im16']
-im_names = glob.glob(path + '/images/*')
+im_names = glob.glob(path + '/Images/*')
 img_size = (400, 1200)
 all_blue = np.zeros(img_size[1])
 all_brown = np.zeros(img_size[1])
@@ -33,9 +35,10 @@ for im_name in im_names:
         return cv2.inRange(hsv, lower_bound, upper_bound)
 
 
-    for mask_name in glob.glob(path+'/mask/' + os.path.splitext(os.path.basename(im_name))[0] + '_*'):
+    for mask_name in glob.glob(path+'/Annotation/' + os.path.splitext(os.path.basename(im_name))[0] + '_*'):
         img = cv2.imread(im_name)
-        mask = cv2.imread(mask_name, 0)
+        mask = cv2.imread(mask_name, cv2.IMREAD_UNCHANGED)
+        mask = np.array([[max(x) for x in y] for y in mask])
         img = cv2.bitwise_and(img, img, mask=mask)
         # img = cv2.resize(img, img_size)
 

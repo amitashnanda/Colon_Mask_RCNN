@@ -37,22 +37,24 @@ class BowlConfig(Config):
     # Give the configuration a recognizable name
     NAME = "Inference"
 
-    IMAGE_RESIZE_MODE = "pad64" ## tried to modfied but I am using other git clone
+    IMAGE_RESIZE_MODE = "square" ## tried to modfied but I am using other git clone
     ## No augmentati
     ZOOM = False
     ASPECT_RATIO = 1
     MIN_ENLARGE = 1
     IMAGE_MIN_SCALE = False ## Not using this
 
-    IMAGE_MIN_DIM = 512 # We scale small images up so that smallest side is 512
-    IMAGE_MAX_DIM = False
+    # IMAGE_MIN_DIM = 512 # We scale small images up so that smallest side is 512
+    # IMAGE_MAX_DIM = False
+    IMAGE_MIN_DIM = 800
+    IMAGE_MAX_DIM = 1024
 
     GPU_COUNT = 1
     IMAGES_PER_GPU = 1
 
     DETECTION_MAX_INSTANCES = 512
-    DETECTION_NMS_THRESHOLD =  0.2
-    DETECTION_MIN_CONFIDENCE = 0.9
+    DETECTION_NMS_THRESHOLD =  0.8
+    DETECTION_MIN_CONFIDENCE = 0.6
 
     LEARNING_RATE = 0.001
     
@@ -61,10 +63,11 @@ class BowlConfig(Config):
 
     # Use smaller anchors because our image and objects are small
     RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)  # anchor side in pixels
+    # RPN_ANCHOR_SCALES = (128, 256, 512)
 
     # Reduce training ROIs per image because the images are small and have
     # few objects. Aim to allow ROI sampling to pick 33% positive ROIs.
-    TRAIN_ROIS_PER_IMAGE = 600
+    TRAIN_ROIS_PER_IMAGE = 200
 
     USE_MINI_MASK = True
 
@@ -80,12 +83,12 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 ## Change this with the path to the last epoch of train
 
-model_path = os.path.join(MODEL_DIR, 'new.h5')
+model_path = os.path.join(MODEL_DIR, 'Reinhard.h5')
 
 
 ## change this with the correct paths for images and sample submission
-test_path = os.path.join(ROOT_DIR,'dataset/new_crypts/test')
-sample_submission = pd.read_csv('dataset/new_crypts/test/all_tests.txt')
+test_path = os.path.join(ROOT_DIR,'dataset/Mix_crypts/test')
+sample_submission = pd.read_csv('dataset/Mix_crypts/test/all_tests.txt')
 
 
 print("Loading weights from ", model_path)
@@ -138,13 +141,13 @@ for i in np.arange(n_images):
     original_image = original_image[:,:,:3]
 
     ## Make prediction for that image
-    results = model.detect([original_image], verbose=0)
+    results = model.detect([original_image], verbose=1)
 
     # Display results
     ax = get_ax(1)
     r = results[0]
     visualize.display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
-                                ['a', 'b'], r['scores'],
+                                ['bg', 'crypt', 'gland'], r['scores'],
                                 title=image_id)
 
     ## Proccess prediction into rle
