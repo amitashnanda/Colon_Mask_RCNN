@@ -84,8 +84,8 @@ model_path = os.path.join(MODEL_DIR, 'new.h5')
 
 
 ## change this with the correct paths for images and sample submission
-test_path = os.path.join(ROOT_DIR,'dataset/crypts/test')
-sample_submission = pd.read_csv('dataset/crypts_rotate.csv')
+test_path = os.path.join(ROOT_DIR,'dataset/new_crypts/test')
+sample_submission = pd.read_csv('dataset/new_crypts/test/all_tests.txt')
 
 
 print("Loading weights from ", model_path)

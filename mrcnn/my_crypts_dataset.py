@@ -24,7 +24,7 @@ class CryptsConfig(Config):
 
     IMAGE_CHANNEL_COUNT = 3
     # Augmentation parameters
-    ASPECT_RATIO = 1.3  ## Maximum aspect ratio modification when scaling
+    ASPECT_RATIO = 1.2  ## Maximum aspect ratio modification when scaling
     MIN_ENLARGE = 1.2  ## Minimum enlarging of images, note that this will be randomized
     ZOOM = 1.5  ## Maximum zoom per image, note that this will be randomized
 
@@ -43,7 +43,8 @@ class CryptsConfig(Config):
 
 
     # Use smaller anchors because our image and objects are small
-    RPN_ANCHOR_SCALES = (128, 256, 512)  # anchor side in pixels
+    #RPN_ANCHOR_SCALES = (128, 256, 512)  # anchor side in pixels
+    RPN_ANCHOR_SCALES = (32, 64, 128, 256, 512)
     # RPN_ANCHOR_SCALES = (4, 8 , 16, 32, 64)  # anchor side in pixels
 
     # Reduce training ROIs per image because the images are small and have

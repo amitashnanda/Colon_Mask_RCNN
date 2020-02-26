@@ -37,8 +37,10 @@ bowl_config.display()
 # Root directory of the project
 ROOT_DIR = os.getcwd()
 
+##base_dir = "dataset/Reinhard"
+base_dir = "dataset/Reinhard_Mix_crypts"
 ## Change this dir to the stage 1 training data
-train_dir = os.path.join(ROOT_DIR, 'dataset/Reinhard/train/Images')
+train_dir = os.path.join(ROOT_DIR, base_dir + '/train/Images')
 #train_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/train/Images')
 ## add here
 print(train_dir)
@@ -48,17 +50,17 @@ train_ids = next(os.walk(train_dir))[2]
 
 # Training dataset
 dataset_train = CryptsDataset()
-dataset_train.load_bowl(train_ids, 'dataset/Reinhard/train')
+dataset_train.load_bowl(train_ids, base_dir + '/train')
 #dataset_train.load_bowl(train_ids, 'dataset/Deconvolution/train')
 dataset_train.prepare()
 
 # # Validation dataset, same as training.. will use pad64 on this one
 #val_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/valid/Images/')
-val_dir = os.path.join(ROOT_DIR, 'dataset/Reinhard/valid/Images/')
+val_dir = os.path.join(ROOT_DIR, base_dir + '/valid/Images/')
 valid_ids = next(os.walk(val_dir))[2]
 dataset_val = CryptsDataset()
 #dataset_val.load_bowl(valid_ids, 'dataset/Deconvolution/valid')
-dataset_val.load_bowl(valid_ids, 'dataset/Reinhard/valid')
+dataset_val.load_bowl(valid_ids, base_dir + '/valid')
 dataset_val.prepare()
 
 # Directory to save logs and trained model
