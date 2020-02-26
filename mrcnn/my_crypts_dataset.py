@@ -3,6 +3,7 @@ import os
 import numpy as np
 import skimage.io
 import glob
+import cv2
 
 from mrcnn.config import Config
 
@@ -38,7 +39,7 @@ class CryptsConfig(Config):
     IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
-    NUM_CLASSES = 1 + 1 + 1  # background + u-shape + circular glands
+    NUM_CLASSES = 1 + 2   # background + u-shape + circular glands
 
 
     # Use smaller anchors because our image and objects are small
@@ -95,6 +96,7 @@ class CryptsDataset(Dataset):
         image_path = info['path']
         image_path = os.path.join(self.folder_path, 'Images', image_path)
         image = skimage.io.imread(image_path)
+        #image = cv2.imread(image_path)
         image = image[:,:,:3]
         return image
         
