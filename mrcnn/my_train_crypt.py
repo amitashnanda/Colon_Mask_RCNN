@@ -14,9 +14,9 @@ import time
 #######################################################################################
 ## SET UP CONFIGURATION
 parser = argparse.ArgumentParser("my_train_crypt.py")
-parser.add_argument("dataset", help="path to the dataset, Exp: dataset/Normalized_Images", type=str, required=True)
-parser.add_argument("dest", help="name of the output model, Exp:final.h5", type=str, required=True)
-parser.add_argument("model", help="path to the model, Exp: logs/no_transfer/mask_rcnn_crypt_0060.h5", type=str, required=False)
+parser.add_argument("--dataset", help="path to the dataset, Exp: dataset/Normalized_Images", type=str, required=True)
+parser.add_argument("--dest", help="name of the output model, Exp:final.h5", type=str, required=True)
+parser.add_argument("--model", help="path to the model, Exp: logs/no_transfer/mask_rcnn_crypt_0060.h5", type=str, required=False)
 args = parser.parse_args()
 
 seed = 123
