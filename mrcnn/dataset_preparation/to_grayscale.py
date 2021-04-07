@@ -2,7 +2,7 @@ import cv2
 import glob, os, errno
 import numpy as np
 
-for fil in glob.glob("/Users/mahdi/software/Colon_Mask_RCNN/mrcnn/dataset/Normalized_Images/valid/Annotation/*"):
+for fil in glob.glob("/Users/mahdi/software/Colon_Mask_RCNN/mrcnn/dataset/Normalized_Images/test/Annotation_gland/*"):
     print(fil)
     image = cv2.imread(fil, cv2.IMREAD_UNCHANGED)
     if len(image.shape) == 2:
