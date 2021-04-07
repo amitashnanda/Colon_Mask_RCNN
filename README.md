@@ -10,11 +10,21 @@ In order to train the model on the Colon Crypts dataset, make sure you followed 
 
 ```
 cd mrcnn/
-# Train a new model starting from no pretrained model
-python3 my_train_crypt.py path/to/dataset/ 
+python3 my_train_crypt.py -h
+usage: my_train_crypt.py [-h] --dataset DATASET --dest DEST [--model MODEL]
+
+optional arguments:
+  -h, --help         show this help message and exit
+  --dataset DATASET  path to the dataset, Exp: dataset/Normalized_Images
+  --dest DEST        name of the output model, Exp:final.h5
+  --model MODEL      path to the model, Exp:
+                     logs/no_transfer/mask_rcnn_crypt_0060.h5
+ 
+# Train a new model from the scratch
+python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5
 
 # Train a new model starting from pretrained model
-python3 my_train_crypt.py path/to/dataset/ path/to/model
+python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5 --model logs/base_model.h5
 
 ```
 
