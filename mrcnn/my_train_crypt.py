@@ -1,35 +1,28 @@
-seed = 123
-
-import numpy as np
-
-np.random.seed(seed)
 import tensorflow as tf
-
-tf.set_random_seed(seed)
-
 import random
-
-random.seed(seed)
-
 import os
-
 import sys
-
 import time
-
 from my_crypts_dataset import CryptsDataset, CryptsConfig
-
 import model as modellib
 from model import log
-
 import numpy as np
 from imgaug import augmenters as iaa
-
-import skimage.io
+import argparse
+import time
 
 #######################################################################################
 ## SET UP CONFIGURATION
+parser = argparse.ArgumentParser("my_train_crypt.py")
+parser.add_argument("dataset", help="path to the dataset, Exp: dataset/Normalized_Images", type=str, required=True)
+parser.add_argument("dest", help="name of the output model, Exp:final.h5", type=str, required=True)
+parser.add_argument("model", help="path to the model, Exp: logs/no_transfer/mask_rcnn_crypt_0060.h5", type=str, required=False)
+args = parser.parse_args()
 
+seed = 123
+np.random.seed(seed)
+tf.set_random_seed(seed)
+random.seed(seed)
 bowl_config = CryptsConfig()
 bowl_config.display()
 #######################################################################################
@@ -38,11 +31,8 @@ bowl_config.display()
 ROOT_DIR = os.getcwd()
 
 ##base_dir = "dataset/Reinhard"
-base_dir = "dataset/Normalized_Images"
-## Change this dir to the stage 1 training data
+base_dir = args.dataset
 train_dir = os.path.join(ROOT_DIR, base_dir + '/train/Images')
-#train_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/train/Images')
-## add here
 print(train_dir)
 
 # Get train IDs
@@ -51,27 +41,19 @@ train_ids = next(os.walk(train_dir))[2]
 # Training dataset
 dataset_train = CryptsDataset()
 dataset_train.load_bowl(train_ids, base_dir + '/train')
-#dataset_train.load_bowl(train_ids, 'dataset/Deconvolution/train')
 dataset_train.prepare()
 
 # # Validation dataset, same as training.. will use pad64 on this one
-#val_dir = os.path.join(ROOT_DIR, 'dataset/Deconvolution/valid/Images/')
 val_dir = os.path.join(ROOT_DIR, base_dir + '/valid/Images/')
 valid_ids = next(os.walk(val_dir))[2]
 dataset_val = CryptsDataset()
-#dataset_val.load_bowl(valid_ids, 'dataset/Deconvolution/valid')
 dataset_val.load_bowl(valid_ids, base_dir + '/valid')
 dataset_val.prepare()
 
 # Directory to save logs and trained model
 MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
-# Local path to trained weights file
-## https://github.com/matterport/Mask_RCNN/releases/download/v2.0/mask_rcnn_coco.h5
-
-
 #COCO_MODEL_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
-COCO_MODEL_PATH = os.path.join(ROOT_DIR, "logs/no_transfer/mask_rcnn_crypt_0060.h5")
 
 model = modellib.MaskRCNN(mode="training", config=bowl_config,
                           model_dir=MODEL_DIR)
@@ -80,8 +62,8 @@ model = modellib.MaskRCNN(mode="training", config=bowl_config,
 #                   exclude=["mrcnn_class_logits", "mrcnn_bbox_fc",
 #                            "mrcnn_bbox", "mrcnn_mask"])
 
-model.load_weights(COCO_MODEL_PATH, by_name=True)
-import time
+if args.model:
+    model.load_weights(args.model, by_name=True)
 
 start_time = time.time()
 
@@ -208,17 +190,17 @@ def _load_augmentation_aug_all():
 
 # augmentation = False
 
-#model.train(dataset_train, dataset_val,
-#            learning_rate=bowl_config.LEARNING_RATE,
-#            epochs=10,
-            #augmentation=augmentation,
-            # augment=True,
-#            layers="heads")
+model.train(dataset_train, dataset_val,
+           learning_rate=bowl_config.LEARNING_RATE,
+           epochs=10,
+            augmentation=augmentation,
+            augment=True,
+           layers="heads")
 
-#model.train(dataset_train, dataset_val,
-#            learning_rate=bowl_config.LEARNING_RATE,
-#            epochs=20,
-#            layers="4+")
+model.train(dataset_train, dataset_val,
+           learning_rate=bowl_config.LEARNING_RATE,
+           epochs=20,
+           layers="4+")
 augmentation = _load_augmentation_aug_all()
 model.train(dataset_train, dataset_val,
             learning_rate=bowl_config.LEARNING_RATE,
@@ -227,23 +209,9 @@ model.train(dataset_train, dataset_val,
             # augment=True,
             layers="all")
 
-#model.train(dataset_train, dataset_val,
-#            learning_rate=bowl_config.LEARNING_RATE / 10,
-#            epochs=50,
-            #augmentation=augmentation,
-            # augment=True,
-#            layers="all")
-
-#model.train(dataset_train, dataset_val,
-#            learning_rate=bowl_config.LEARNING_RATE / 30,
-#            epochs=75,
-#            augmentation=augmentation,
-            # augment=True,
-#            layers="all")
-
 end_time = time.time()
 ellapsed_time = (end_time - start_time) / 3600
 
 print(model.log_dir)
-model_path = os.path.join(model.log_dir, 'final.h5')
+model_path = os.path.join(model.log_dir, args.dest)
 model.keras_model.save_weights(model_path)
