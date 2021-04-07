@@ -27,7 +27,21 @@ python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5
 python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5 --model logs/base_model.h5
 
 ```
+# Prediction
+For model prediction on the given dataset, you can use the following instructions:
+```
+python my_inference.py -h
+usage: my_train_crypt.py [-h] --dataset DATASET --model MODEL
 
+optional arguments:
+  -h, --help         show this help message and exit
+  --dataset DATASET  path to the dataset, Exp: dataset/Normalized_Images/
+  --model MODEL      name of the model, Exp:final.h5
+
+# Prediction and generate the mask files
+python3 my_train_crypt.py --dataset=dataset/Normalized_Images/test/ --model=final.h5
+
+```
 ## Citation
 Use this bibtex to cite this paper and repo:
 ```
