@@ -8,8 +8,8 @@ import model as modellib
 from model import log
 import numpy as np
 from imgaug import augmenters as iaa
-import argparse
 import time
+import argparse
 
 #######################################################################################
 ## SET UP CONFIGURATION
