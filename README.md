@@ -42,6 +42,21 @@ optional arguments:
 python3 my_train_crypt.py --dataset=dataset/Normalized_Images/test/ --model=final.h5
 
 ```
+# Running the whole pipeline
+To reproduce the result from the paper 
+```
+python color_normalize_pipe.py -h
+usage: color_normalize_pipe.py [-h] --ref REF --dest DEST --src SRC
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --ref REF    path to the reference image, Exp: dataset/color_reference.png
+  --dest DEST  Folder path of the output images, Exp:dataset/Color_Normalized/
+  --src SRC    Folder path of the source images (will only process png files),
+               Exp: dataset/Raw_images/
+# Normalize the dastaset images
+python3 color_normalize_pipe.py 
+```
 ## Citation
 Use this bibtex to cite this paper and repo:
 ```
