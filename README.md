@@ -74,6 +74,18 @@ After the image xy-axis align, now you can run the prediction on the same folder
 ```
 python3 my_inference.py --dataset=dataset/test_images/ --model=final.h5
 ```
+Now there will be another folder with the predicted mask of the provided images, in the folder named "predicted_mask". From here you can call the next pipeline to rotate the U-shapes to align them from bottom to top for the futher analysis.
+```
+python U-shape-bottom-pipeline.py -h
+usage: U-shape-bottom-pipeline.py [-h] --src SRC
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --src SRC   Root folder path of the process images(has to include
+              predicted_mask and images) Exp: dataset/test_images/
+# Bottom up alignment
+python3 U-shape-bottom-pipeline.py --src dataset/test_images/
+```
 ## Citation
 Use this bibtex to cite this paper and repo:
 ```
