@@ -43,7 +43,7 @@ python3 my_train_crypt.py --dataset=dataset/Normalized_Images/test/ --model=fina
 
 ```
 # Running the whole pipeline
-To reproduce the result from the paper 
+To reproduce the result from the paper, you might need to normalize the color spectrum in the dataset using reinhard algorithm. 
 ```
 python color_normalize_pipe.py -h
 usage: color_normalize_pipe.py [-h] --ref REF --dest DEST --src SRC
@@ -56,6 +56,19 @@ optional arguments:
                Exp: dataset/Raw_images/
 # Normalize the dastaset images
 python3 color_normalize_pipe.py 
+```
+Having the color normalized data, you need to apply hough transform to better align the images before the machine learning pipeline.
+```
+usage: hough_transform.py [-h] --dest DEST --src SRC
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --dest DEST  Root folder path of the dest images Exp: images/
+  --src SRC    Root folder path of the source images (will only process png
+               files) Exp: if you have images in images/data1/1.png
+               images/data2/3.png you should pass: images/
+# Transform the dataset
+python3 hough_transform.py --src dataset/test_images/ --dest dataset/test_images/ 
 ```
 ## Citation
 Use this bibtex to cite this paper and repo:
