@@ -31,7 +31,7 @@ python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5 --
 For model prediction on the given dataset, you can use the following instructions:
 ```
 python my_inference.py -h
-usage: my_train_crypt.py [-h] --dataset DATASET --model MODEL
+usage: my_inference.py [-h] --dataset DATASET --model MODEL
 
 optional arguments:
   -h, --help         show this help message and exit
@@ -39,7 +39,7 @@ optional arguments:
   --model MODEL      name of the model, Exp:final.h5
 
 # Prediction and generate the mask files
-python3 my_train_crypt.py --dataset=dataset/Normalized_Images/test/ --model=final.h5
+python3 my_inference.py --dataset=dataset/Normalized_Images/test/ --model=final.h5
 
 ```
 # Running the whole pipeline
@@ -69,6 +69,10 @@ optional arguments:
                images/data2/3.png you should pass: images/
 # Transform the dataset
 python3 hough_transform.py --src dataset/test_images/ --dest dataset/test_images/ 
+```
+After the image xy-axis align, now you can run the prediction on the same folder, because the last command will store the images in the "dest_path/images", so you have to pass the same "dest_path" here.
+```
+python3 my_inference.py --dataset=dataset/test_images/ --model=final.h5
 ```
 ## Citation
 Use this bibtex to cite this paper and repo:
