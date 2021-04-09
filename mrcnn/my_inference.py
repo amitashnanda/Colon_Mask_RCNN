@@ -23,7 +23,7 @@ import argparse
 
 #######################################################################################
 ## SET UP CONFIGURATION
-parser = argparse.ArgumentParser("my_train_crypt.py")
+parser = argparse.ArgumentParser("my_inference.py")
 parser.add_argument("--dataset", help="path to the dataset, Exp: dataset/Normalized_Images/", type=str, required=True)
 parser.add_argument("--model", help="name of the model, Exp:final.h5", type=str, required=True)
 args = parser.parse_args()
