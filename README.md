@@ -27,7 +27,49 @@ python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5
 python3 my_train_crypt.py --dataset dataset/Normalized_Images --dest final.h5 --model logs/base_model.h5
 
 ```
+# Prediction
+For model prediction on the given dataset, you can use the following instructions:
+```
+python my_inference.py -h
+usage: my_train_crypt.py [-h] --dataset DATASET --model MODEL
 
+optional arguments:
+  -h, --help         show this help message and exit
+  --dataset DATASET  path to the dataset, Exp: dataset/Normalized_Images/
+  --model MODEL      name of the model, Exp:final.h5
+
+# Prediction and generate the mask files
+python3 my_train_crypt.py --dataset=dataset/Normalized_Images/test/ --model=final.h5
+
+```
+# Running the whole pipeline
+To reproduce the result from the paper, you might need to normalize the color spectrum in the dataset using reinhard algorithm. 
+```
+python color_normalize_pipe.py -h
+usage: color_normalize_pipe.py [-h] --ref REF --dest DEST --src SRC
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --ref REF    path to the reference image, Exp: dataset/color_reference.png
+  --dest DEST  Folder path of the output images, Exp:dataset/Color_Normalized/
+  --src SRC    Folder path of the source images (will only process png files),
+               Exp: dataset/Raw_images/
+# Normalize the dastaset images
+python3 color_normalize_pipe.py 
+```
+Having the color normalized data, you need to apply hough transform to better align the images before the machine learning pipeline.
+```
+usage: hough_transform.py [-h] --dest DEST --src SRC
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --dest DEST  Root folder path of the dest images Exp: images/
+  --src SRC    Root folder path of the source images (will only process png
+               files) Exp: if you have images in images/data1/1.png
+               images/data2/3.png you should pass: images/
+# Transform the dataset
+python3 hough_transform.py --src dataset/test_images/ --dest dataset/test_images/ 
+```
 ## Citation
 Use this bibtex to cite this paper and repo:
 ```
