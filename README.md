@@ -86,6 +86,24 @@ optional arguments:
 # Bottom up alignment
 python3 U-shape-bottom-pipeline.py --src dataset/test_images/
 ```
+Finally in the last step, the color spectrum needs to get measured from bottom to top. The following script will separate the image_mask, plot the blue vs brown color for each image and also aggregate all the images result together in the final result text file.
+```
+python color_detection.py -h
+usage: color_detection.py [-h] --src SRC --dest DEST
+
+optional arguments:
+  -h, --help   show this help message and exit
+  --src SRC    path to the dataset, Exp: dataset/Normalized_Images/
+  --dest DEST  path to the final result text file, Exp: res.txt. The result
+               table has the following columns in the tsv format: Folder_name,
+               average of the blue intensity in the first 50% of the image,
+               average blue in the last 50%, blue in the first 25%, blue in
+               the last 25%, followed by the same column for average brown
+               intensity
+
+# Color detection values
+python3 color_detection.py --src dataset/test_images/ --dest res.txt
+```
 ## Citation
 Use this bibtex to cite this paper and repo:
 ```
