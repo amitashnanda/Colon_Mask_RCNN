@@ -194,7 +194,7 @@ model.train(dataset_train, dataset_val,
            learning_rate=bowl_config.LEARNING_RATE,
            epochs=10,
             augmentation=augmentation,
-            augment=True,
+            #augment=True,
            layers="heads")
 
 model.train(dataset_train, dataset_val,
