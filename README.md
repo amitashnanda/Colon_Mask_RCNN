@@ -124,7 +124,6 @@ Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `req
    ```bash
    conda env create -f conda_environment.yml 
    conda activate base
-   pip3 install -r requirements.txt
    ```
 3. Run setup from the repository root directory
     ```bash
