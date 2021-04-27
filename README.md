@@ -124,6 +124,7 @@ Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `req
    ```bash
    conda env create -f conda_environment.yml 
    conda activate base
+   pip install histomicstk --find-links https://girder.github.io/large_image_wheels
    ```
 3. Run setup from the repository root directory
     ```bash
