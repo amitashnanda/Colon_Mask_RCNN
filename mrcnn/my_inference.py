@@ -14,7 +14,7 @@ import os
 import my_functions as f
 import imgaug.augmenters as iaa
 from mrcnn.model import log
-from mrcnn.visualize import display_instances
+from visualize import display_instances
 import matplotlib.pyplot as plt
 import cv2 as cv
 import math
