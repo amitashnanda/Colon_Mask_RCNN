@@ -126,25 +126,23 @@ if __name__ == '__main__':
                         type=str, required=True)
     args = parser.parse_args()
     # for test_folder in ["test", "test_external"]:
-    for test_folder in os.listdir(args.src):
-        if os.path.isfile(args.src + test_folder):
-            continue
-        src_folder = args.src + test_folder
-        dst_folder = args.src + test_folder
-        file_paths = glob.glob(src_folder + "" + '*.png')
-        # try:
-        #     os.makedirs(dst_folder + "/Images/", )
-        #     os.makedirs(dst_folder + "/Annotation/", )
-        #     os.makedirs(dst_folder + "/Annotation_gland/", )
-        # except Exception as e:
-        #
-        #     print(e)
-        #     pass
-        try:
-            os.makedirs(dst_folder + "/images/", )
-            # os.makedirs(dst_folder + "/labels/", )
-        except:
-            pass
-        for file_path in file_paths:
-            save_hough_transform(file_path, dst_folder)
-            # save_hough_transform_annotation(file_path, dst_folder, src_folder)
+    # for test_folder in os.listdir(args.src):
+    src_folder = args.src
+    dst_folder = args.dest
+    file_paths = glob.glob(src_folder + "" + '*.png')
+    # try:
+    #     os.makedirs(dst_folder + "/Images/", )
+    #     os.makedirs(dst_folder + "/Annotation/", )
+    #     os.makedirs(dst_folder + "/Annotation_gland/", )
+    # except Exception as e:
+    #
+    #     print(e)
+    #     pass
+    try:
+        os.makedirs(dst_folder)
+        # os.makedirs(dst_folder + "/labels/", )
+    except:
+        pass
+    for file_path in file_paths:
+        save_hough_transform(file_path, dst_folder)
+        # save_hough_transform_annotation(file_path, dst_folder, src_folder)
