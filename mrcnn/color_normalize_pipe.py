@@ -15,7 +15,11 @@ args = parser.parse_args()
 def reinhard_img(directory, des_path):
     img = cv2.imread(args.ref)
     mean_ref, std_ref = htk.preprocessing.color_conversion.lab_mean_std(img)
-
+    des_path = des_path + "/images/"
+    try:
+        os.mkdir(des_path)
+    except:
+        pass
     for filename in os.listdir(directory):
         print(filename)
         img_input = cv2.imread(directory + filename)
