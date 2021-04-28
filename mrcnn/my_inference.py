@@ -90,7 +90,7 @@ MODEL_DIR = os.path.join(ROOT_DIR, "logs")
 
 ## Change this with the path to the last epoch of train
 
-model_path = os.path.join(MODEL_DIR, args.model)
+model_path = args.model
 
 
 ## change this with the correct paths for images and sample submission
