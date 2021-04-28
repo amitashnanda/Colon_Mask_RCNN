@@ -36,8 +36,8 @@ def get_hough_angle(img):
 
     def reject_outliers(data, m=2):
         return data[abs(data - np.mean(data)) < m * np.std(data)]
-    print(len(lines_theta))
-    print(lines_theta)
+    # print(len(lines_theta))
+    # print(lines_theta)
     filter_lines_theta = reject_outliers(lines_theta, .5)
     if len(filter_lines_theta) == 0:
         filter_lines_theta = reject_outliers(lines_theta, 1)
