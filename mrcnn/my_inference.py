@@ -16,7 +16,6 @@ import imgaug.augmenters as iaa
 from mrcnn.model import log
 from mrcnn import visualize
 import matplotlib.pyplot as plt
-from mrcnn.visualize import display_images
 import cv2 as cv
 import math
 import argparse
