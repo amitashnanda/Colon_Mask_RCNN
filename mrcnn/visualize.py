@@ -92,6 +92,7 @@ def display_instances(image, boxes, masks, class_ids, class_names,
     class_names: list of class names of the dataset
     scores: (optional) confidence scores for each box
     title: (optional) Figure title
+    dest: (optional) results/
     show_mask, show_bbox: To show masks and bounding boxes or not
     figsize: (optional) the size of the image
     colors: (optional) An array or colors to use with each object

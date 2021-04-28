@@ -14,7 +14,7 @@ import os
 import my_functions as f
 import imgaug.augmenters as iaa
 from mrcnn.model import log
-from mrcnn import visualize
+from mrcnn.visualize import display_instances
 import matplotlib.pyplot as plt
 import cv2 as cv
 import math
@@ -233,7 +233,7 @@ for i in np.arange(n_images):
     # Display results
     ax = get_ax(1)
     r = results[0]
-    visualize.display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
+    display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
                                 ['bg', 'crypt', 'gland'], r['scores'],
                                 title=image_id, dest=dest_path+"predicted_images/")
 
