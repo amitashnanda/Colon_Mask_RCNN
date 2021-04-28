@@ -90,11 +90,11 @@ def save_hough_transform(image_path, dst_folder, label_folder=None):
     theta = get_hough_angle(img)
     img = skimage.io.imread(image_path)
     img = rotate_image(img, theta)
-    skimage.io.imsave(dst_folder + "/images/" + os.path.splitext(os.path.basename(image_path))[0]+ '.png', img)
+    skimage.io.imsave(dst_folder + os.path.splitext(os.path.basename(image_path))[0]+ '.png', img)
     if label_folder:
         mask = skimage.io.imread(label_folder + os.path.splitext(os.path.basename(image_path))[0] + ".png")
         mask = rotate_image(mask, theta)
-        skimage.io.imsave(dst_folder + "/labels/" + os.path.splitext(os.path.basename(image_path))[0]+ '.png', mask)
+        skimage.io.imsave(dst_folder + os.path.splitext(os.path.basename(image_path))[0]+ '.png', mask)
 
 
 def save_hough_transform_annotation(image_path, dst_folder, label_folder):
