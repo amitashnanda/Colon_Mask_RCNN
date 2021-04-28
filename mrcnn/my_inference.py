@@ -24,7 +24,8 @@ import argparse
 #######################################################################################
 ## SET UP CONFIGURATION
 parser = argparse.ArgumentParser("my_inference.py")
-parser.add_argument("--dataset", help="path to the dataset, Exp: dataset/Normalized_Images/", type=str, required=True)
+parser.add_argument("--src", help="path to the src, Exp: dataset/Normalized_Images/", type=str, required=True)
+parser.add_argument("--dest", help="path to the dest, Exp: dataset/Normalized_Images/", type=str, required=True)
 parser.add_argument("--model", help="name of the model, Exp:final.h5", type=str, required=True)
 args = parser.parse_args()
 
@@ -93,19 +94,24 @@ model_path = os.path.join(MODEL_DIR, args.model)
 
 
 ## change this with the correct paths for images and sample submission
-src_path = args.dataset
-test_path = os.path.join(ROOT_DIR, src_path+'images')
+src_path = args.src
+dest_path = args.dest
+test_path = os.path.join(ROOT_DIR, src_path)
 # sample_submission = pd.read_csv('dataset/Normalized_Images/test.txt', delimiter="\t")
 
 # sample_submission = pd.DataFrame({"ImageId": ["50HD0147.png"]})
-image_ids = [image_id for image_id in os.listdir(src_path + "images") if image_id.endswith(".png")]
+image_ids = [image_id for image_id in os.listdir(src_path) if image_id.endswith(".png")]
 sample_submission = pd.DataFrame({"ImageId": image_ids})
 
 print("Loading weights from ", model_path)
 
 try:
-    os.mkdir(src_path+"predicted_mask")
-    os.mkdir(src_path+"predicted_images")
+    os.mkdir(dest_path)
+except:
+    pass
+try:
+    os.mkdir(dest_path+"predicted_mask")
+    os.mkdir(dest_path+"predicted_images")
 except:
     pass
 import time
@@ -230,7 +236,7 @@ for i in np.arange(n_images):
     r = results[0]
     visualize.display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
                                 ['bg', 'crypt', 'gland'], r['scores'],
-                                title=image_id, dest=src_path+"predicted_images/")
+                                title=image_id, dest=dest_path+"predicted_images/")
 
     ## Proccess prediction into rle
     pred_masks = results[0]['masks']
@@ -245,7 +251,7 @@ for i in np.arange(n_images):
 
     for i, class_id in enumerate(class_ids):
         if class_id == 1:  # using inference_config.NUM_CLASSES-i instead of i to fix the mismatch in semantic dataset
-            cv.imwrite(os.path.join(src_path+"predicted_mask/", image_id[:-len(".png")]+ "_" + str(i) + ".png"), pred_masks[:, :, i]*255)
+            cv.imwrite(os.path.join(dest_path+"predicted_mask/", image_id[:-len(".png")]+ "_" + str(i) + ".png"), pred_masks[:, :, i]*255)
 
     # cv2.imwrite(os.path.join("prediction", image_id), pred)
     # plt.imsave(os.path.join("prediction", image_id), pred)
