@@ -21,12 +21,15 @@ def reinhard_img(directory, des_path):
     except:
         pass
     for filename in os.listdir(directory):
-        print(filename)
-        img_input = cv2.imread(directory + filename)
-        plt.imshow(img_input), plt.show()
-        im_nmzd = htk.preprocessing.color_normalization.reinhard(img_input, mean_ref, std_ref)
-        status = cv2.imwrite(des_path + filename, im_nmzd)
-        plt.imshow(im_nmzd), plt.show()
-        print("Image written to file-system : ", status)
+        if filename.endswith('.JPG'):
+            print(filename)
+            img_input = cv2.imread(directory + filename)
+            plt.imshow(img_input), plt.show()
+            im_nmzd = htk.preprocessing.color_normalization.reinhard(img_input, mean_ref, std_ref)
+            status = cv2.imwrite(des_path + filename[:-3] + 'png', im_nmzd)
+            plt.imshow(im_nmzd), plt.show()
+            print("Image written to file-system : ", status)
+        else:
+            continue
 
 reinhard_img(args.src, args.dest)
