@@ -122,10 +122,17 @@ Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `req
 1. Clone this repository
 2. Install dependencies
    ```bash
-   pip3 install -r requirements.txt
+   conda env create -f conda_environment.yml 
+   conda activate base
+   pip install histomicstk --find-links https://girder.github.io/large_image_wheels
    ```
 3. Run setup from the repository root directory
     ```bash
     python3 setup.py install
     ``` 
 4. Download the dataset from this link: https://ucsdcloud-my.sharepoint.com/:f:/g/personal/dsahoo_ucsd_edu/EpwRsAH91HxFoj8FTnqh0NUB93MYYdji0hSWaDuMlBMaVQ?e=IKIZ2k and put it in the mrcnn/dataset folder
+5. Download the inference dataset from this link: https://ucsdcloud-my.sharepoint.com/:f:/g/personal/dsahoo_ucsd_edu/EgOIJFepWBJFpFIY8TsocsgBT8NxJ8M7DfWHUlWV-Q1bcQ?e=Ljk1cr
+6. Add this project to your pythonpath
+   ```bash
+   export PYTHONPATH="${PYTHONPATH}:/path/to/this/project/root"
+   ```
