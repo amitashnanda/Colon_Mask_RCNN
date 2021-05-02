@@ -3,8 +3,6 @@ from matplotlib import pyplot as plt
 import numpy as np
 import os
 import glob
-import seaborn as sns
-import pandas as pd
 from scipy.ndimage.filters import gaussian_filter1d
 import argparse
 
