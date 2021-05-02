@@ -13,19 +13,13 @@
 
 # In[2]:
 
-
 import cv2
 import os
 from matplotlib import pyplot as plt
 import numpy as np
-from math import cos, sin
 # for rotation
 import argparse
 import imutils
-# for skeletonize shape
-from skimage import morphology, filters
-#from skimage.morphology import skeletonize,filters
-from skimage.util import invert
 import glob
 import imgaug.augmenters as iaa
 
@@ -115,7 +109,7 @@ def rotate1(image,elps):
             return rotated, rotated_gray, ([0,0],[0,0]), flag
     
     cv2.ellipse(rotated_gray,ellipse2,(255,255,255),10)
-    plt.imshow(rotated_gray),plt.show()
+    # plt.imshow(rotated_gray),plt.show()
     
     return rotated, rotated_gray, ellipse2, flag
 
@@ -210,7 +204,7 @@ def rotate2(img, direction):
     else:
         rotated = imutils.rotate_bound(img, 90)
         
-    plt.imshow(rotated),plt.show()
+    # plt.imshow(rotated),plt.show()
     return rotated
 
 
@@ -235,7 +229,6 @@ def iterate_dir_save(mask_directory, original_directory, des_dir):
     for rgb_img_path in os.listdir(original_directory):
         mask_names = glob.glob(mask_directory + os.path.splitext(os.path.basename(rgb_img_path))[0] + '_*.png')
         for mask_path in mask_names:
-
             if mask_path.endswith(".png"):
                 try:
                     print(mask_path)
@@ -258,8 +251,8 @@ def iterate_dir_save(mask_directory, original_directory, des_dir):
                 except:
                     continue
                 #path = '/Users/Flora/Desktop/Boolean_Lab_Research/dataset/new_crypts/train/edited_annotation'
-                status = cv2.imwrite(des_dir+os.path.basename(mask_path), res)
-                print("Image written to file-system : ",status)
+                status = cv2.imwrite(os.path.join(des_dir, os.path.basename(mask_path)), res)
+                print("Image written to file-system : ", status)
                 continue
             else:
                 continue
@@ -269,19 +262,17 @@ def iterate_dir_save(mask_directory, original_directory, des_dir):
 
 
 parser = argparse.ArgumentParser("U-shape-bottom-pipeline.py")
-parser.add_argument("--src",
-                    help="Root folder path of the process images(has to include predicted_mask and images) Exp: dataset/test_images/",
+parser.add_argument("--mask_src",
+                    help="Folder path of the predicted mask from the inference part, Exp: dataset/test_masks/",
+                    type=str, required=True)
+parser.add_argument("--image_src",
+                    help="Folder path of the images(the images you used for inference) Exp: dataset/test_images/",
+                    type=str, required=True)
+parser.add_argument("--dest",
+                    help="Output folder path Exp: dataset/test_images/",
                     type=str, required=True)
 args = parser.parse_args()
-# just call iterate_dir_save 
-for test_folder in os.listdir(args.src):
-    if os.path.isfile(args.src + test_folder):
-        continue
-    directory = args.src + test_folder
-    try:
-        iterate_dir_save(directory+"/predicted_mask/", directory+'/images/', directory+'/bottom_up/')
-    except:
-        continue
-
+# just call iterate_dir_save
+iterate_dir_save(args.mask_src, args.image_src, args.dest)
 
 
