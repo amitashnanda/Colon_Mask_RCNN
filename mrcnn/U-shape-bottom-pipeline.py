@@ -227,7 +227,7 @@ def iterate_dir_save(mask_directory, original_directory, des_dir):
         pass
     print(original_directory)
     for rgb_img_path in os.listdir(original_directory):
-        mask_names = glob.glob(mask_directory + os.path.splitext(os.path.basename(rgb_img_path))[0] + '_*.png')
+        mask_names = glob.glob(os.path.join(mask_directory, os.path.splitext(os.path.basename(rgb_img_path))[0] + '_*.png'))
         for mask_path in mask_names:
             if mask_path.endswith(".png"):
                 try:
