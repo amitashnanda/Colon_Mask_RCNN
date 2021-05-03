@@ -14,7 +14,7 @@ import os
 import my_functions as f
 import imgaug.augmenters as iaa
 from mrcnn.model import log
-from visualize import display_instances
+from mrcnn.visualize import display_instances
 import matplotlib.pyplot as plt
 import cv2 as cv
 import math
@@ -95,7 +95,8 @@ model_path = args.model
 ## change this with the correct paths for images and sample submission
 src_path = args.src
 dest_path = args.dest
-test_path = os.path.join(ROOT_DIR, src_path)
+test_path = src_path
+#os.path.join(ROOT_DIR, src_path)
 # sample_submission = pd.read_csv('dataset/Normalized_Images/test.txt', delimiter="\t")
 
 # sample_submission = pd.DataFrame({"ImageId": ["50HD0147.png"]})
@@ -109,8 +110,8 @@ try:
 except:
     pass
 try:
-    os.mkdir(dest_path+"predicted_mask")
-    os.mkdir(dest_path+"predicted_images")
+    os.mkdir(os.path.join(dest_path, "predicted_mask/"))
+    os.mkdir(os.path.join(dest_path, "predicted_images"))
 except:
     pass
 import time
@@ -235,7 +236,7 @@ for i in np.arange(n_images):
     r = results[0]
     display_instances(original_image, r['rois'], r['masks'], r['class_ids'],
                                 ['bg', 'crypt', 'gland'], r['scores'],
-                                title=image_id, dest=dest_path+"predicted_images/")
+                                title=image_id, dest=dest_path)
 
     ## Proccess prediction into rle
     pred_masks = results[0]['masks']
@@ -250,7 +251,7 @@ for i in np.arange(n_images):
 
     for i, class_id in enumerate(class_ids):
         if class_id == 1:  # using inference_config.NUM_CLASSES-i instead of i to fix the mismatch in semantic dataset
-            cv.imwrite(os.path.join(dest_path+"predicted_mask/", image_id[:-len(".png")]+ "_" + str(i) + ".png"), pred_masks[:, :, i]*255)
+            cv.imwrite(os.path.join(dest_path, image_id[:-len(".png")]+ "_" + str(i) + ".png"), pred_masks[:, :, i]*255)
 
     # cv2.imwrite(os.path.join("prediction", image_id), pred)
     # plt.imsave(os.path.join("prediction", image_id), pred)

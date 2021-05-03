@@ -23,10 +23,10 @@ def reinhard_img(directory, des_path):
     for filename in os.listdir(directory):
         if filename.endswith('.JPG'):
             print(filename)
-            img_input = cv2.imread(directory + filename)
+            img_input = cv2.imread(os.path.join(directory, filename))
             plt.imshow(img_input), plt.show()
             im_nmzd = htk.preprocessing.color_normalization.reinhard(img_input, mean_ref, std_ref)
-            status = cv2.imwrite(des_path + filename[:-3] + 'png', im_nmzd)
+            status = cv2.imwrite(os.path.join(des_path, filename[:-3] + 'png'), im_nmzd)
             plt.imshow(im_nmzd), plt.show()
             print("Image written to file-system : ", status)
         else:
