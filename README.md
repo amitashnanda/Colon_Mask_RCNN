@@ -1,8 +1,7 @@
 # Mask R-CNN for Object Detection and Segmentation
-This is the implementation of the "Identification of CDX2 differential expression along the Edapithelium cells of Colon Crypt using Boolean Relationships and deep neural networks on histopathology images" paper. In this project we used python 3, Keras and tensorflow to generate bounding boxes and segmantation masks around each instance. This code was used to train on the gland images from colon tissue and to predict any crypts/glands in the that tissue. 
+This repository details the Python 3 implementation of the research findings from the paper titled "Expression Gradient of Cancer Suppressor Gene Found in Colon Crypt Using Vision-AI". Utilizing Keras and TensorFlow frameworks, the project's objective is to accurately delineate crypts and glands within colon tissue images (histopathological) by creating bounding boxes and segmentation masks for each identified instance. The developed code has been trained and is capable of predicting, the presence of crypts and glands in colon tissue images. 
 
-In this page you find how to reproduce the results from the paper while you will learn how to run it on the other dataset.
-For further information about the codebase you can also look at the Matterport repo (https://github.com/matterport/Mask_RCNN).
+To replicate the study's outcomes and apply the methodology to additional datasets, this guide offers comprehensive instructions. For those interested in a deeper dive into the code's foundation, the Matterport repository at https://github.com/matterport/Mask_RCNN provides extensive resources and foundational elements pertinent to this work.
 
 ## Requirements
 Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `requirements.txt`
@@ -28,8 +27,7 @@ Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `req
 
 
 # Training on Colon Crypts Dataset
-In order to train the model on the Colon Crypts dataset, make sure you followed the Installaton process and you have already downloaded the dataset.
-
+Before training the model on the Colon Crypts and glands dataset, ensure that you have completed the installation process and successfully downloaded the dataset in the correct folder.
 ```
 cd mrcnn/
 python3 my_train_crypt.py -h
