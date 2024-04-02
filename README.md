@@ -4,7 +4,7 @@ This repository details the Python 3 implementation of the research findings fro
 To replicate the study's outcomes and apply the methodology to additional datasets, this guide offers comprehensive instructions. For those interested in a deeper dive into the code's foundation, the Matterport repository at https://github.com/matterport/Mask_RCNN provides extensive resources and foundational elements pertinent to this work.
 
 ## Requirements
-Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `requirements.txt`
+Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `requirements.txt`.
 
 ## Installation
 1. Clone this repository
@@ -13,6 +13,9 @@ Python 3.4, TensorFlow 1.3, Keras 2.0.8 and other common packages listed in `req
    conda env create -f conda_environment.yml 
    conda activate base
    pip install histomicstk --find-links https://girder.github.io/large_image_wheels
+   ```
+   ```bash
+   pip install -r requirements.txt
    ```
 3. Run setup from the repository root directory
     ```bash
